@@ -1,0 +1,77 @@
+// Using Recursion
+// T.C : O(n)
+// S.C : O(n) system stack space
+
+class Solution {
+    public int recursionCarry(ListNode head){
+        if(head==null) return 0;
+        int carry=recursionCarry(head.next); // bring the carry of the rest
+        int value=(head.val)*2 + carry;
+        head.val=value%10;
+        return value/10;
+    }
+    public ListNode doubleIt(ListNode head) {
+        //recursion
+        int LastCarry=recursionCarry(head);
+        if(LastCarry>0){
+            ListNode newHead=new ListNode(LastCarry);
+            newHead.next=head;
+            return newHead;
+        }
+        return head; //else
+    }
+}
+-------------------------------------------------------------------------------------------------------------------------
+// using prev pointer
+// T.c : O(n)
+// S.c : O(1)
+
+
+class Solution {
+    public ListNode doubleIt(ListNode head) {
+        ListNode prev=null;
+        ListNode cur=head;
+        while(cur!=null){
+            int newVal= cur.val *2;
+            if(newVal <=9){
+                cur.val= newVal;
+            }
+            else if(prev!=null){ //not the first node & with carry
+                cur.val=newVal %10;
+                prev.val+=1;
+            }
+            else{ // new head node to created
+                ListNode newHead=new ListNode(1);
+                newHead.next=cur;
+                cur.val=newVal%10; //like else if
+                head=newHead;
+            }
+            prev=cur;
+            cur=cur.next;
+        }
+        return head;
+    }
+}
+-------------------------------------------------------------------------------------------------------------------------
+// Check if the nextnode.val>=5, then add 1 to the cur node
+// T.c : O(n)
+// S.c : O(1)
+
+class Solution {
+    public ListNode doubleIt(ListNode head) {
+        if(head.val>=5){
+            ListNode newHead=new ListNode(0);
+            newHead.next=head;
+            head=newHead;
+        }
+        ListNode cur=head;
+        while(cur!=null ){
+            cur.val=(cur.val*2)%10;
+            if(cur.next!=null && cur.next.val>=5 ){ // you must check null first
+                cur.val+=1;
+            }
+            cur=cur.next;
+        }
+        return head;
+    }
+}
