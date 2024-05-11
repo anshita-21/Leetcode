@@ -1,0 +1,21 @@
+t.c: O(n2)
+s.c: O(n)
+class Solution {
+    public int[] kthSmallestPrimeFraction(int[] arr, int k) {
+        TreeMap<Double,int[]> map=new TreeMap<>();
+        for(int i=0;i<arr.length;i++){
+            for(int j=i+1;j<arr.length;j++){
+                double d=(double)arr[i]/arr[j];
+                map.put(d,new int[]{arr[i],arr[j]});
+            }
+        }
+        int c=0;
+        for(double x:map.keySet()){
+            c++;
+            if(c==k){
+                return map.get(x);
+            }
+        }
+        return null;
+    }
+}
