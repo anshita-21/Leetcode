@@ -1,0 +1,29 @@
+class Solution {
+public:
+    int minimumAverageDifference(vector<int>& nums) {
+        int n=nums.size();
+        long s=0;
+        for(auto i:nums){
+            s+=i;
+        }
+        int indx=-1;
+        long res=INT_MAX;
+        long ls=0;
+        for(int i=0;i<n;i++){
+            ls+=nums[i]; //cumulative sum
+            long rs=s-ls;
+
+            long ln=i+1;
+            long rn=n-ln;
+
+            long la=ls/ln;
+            long ra=i==n-1? 0: rs/rn; //validity
+
+            if(res>abs(ra-la)){
+                res=abs(ra-la);
+                indx=i;
+            }
+        }
+        return indx;
+    }
+};
