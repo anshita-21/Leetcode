@@ -1,0 +1,50 @@
+class Solution {
+public:
+    vector<vector<int>> dir{{0,-1},{-1,0},{0,1},{1,0}};
+    int shortestPath(vector<vector<int>>& grid, int k) {
+        //whenever grid->> BFS
+        int r=grid.size();
+        int c=grid[0].size();
+        queue<vector<int>> q;
+        int i=0,j=0;
+        q.push({i,j,k});
+
+        bool visited[41][41][1601];
+        memset(visited, false, sizeof(visited));
+        
+        int steps=0;
+        while(!q.empty()){
+            int size=q.size();
+            while(size--){
+                vector<int> temp=q.front();
+                q.pop();
+                int curr_i=temp[0];
+                int curr_j=temp[1];
+                int obc=temp[2];
+                if(curr_i==r-1 && curr_j==c-1){
+                    return steps;
+                }
+                
+                for(auto&d:dir){
+                    int new_i=curr_i + d[0];
+                    int new_j=curr_j + d[1];
+
+                    if(new_i<0 ||new_i>=r || new_j<0 || new_j>=c){
+                        continue;
+                    }
+                    if(grid[new_i][new_j]==0 && !visited[new_i][new_j][obc]){
+                        q.push({new_i, new_j, obc});
+                        visited[new_i][new_j][obc]=true;
+                    }
+                    else if( grid[new_i][new_j]==1 && obc>0 && !visited[new_i][new_j][obc-1]){
+                        q.push({new_i, new_j, obc-1});
+                        visited[new_i][new_j][obc-1]=true;
+                    }
+                }
+            }
+            steps++;
+        }
+        return -1;
+         
+    }
+};
