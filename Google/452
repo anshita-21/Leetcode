@@ -1,0 +1,27 @@
+class Solution {
+public:
+    int findMinArrowShots(vector<vector<int>>& points) {
+        int n=points.size();
+        sort(points.begin(), points.end());
+        int count=1;
+        vector<int>prev;
+        prev=points[0];
+
+        for(int i=0;i<n;i++){
+            int curr_start=points[i][0];
+            int curr_end=points[i][1];
+            int prev_start=prev[0];
+            int prev_end=prev[1];
+
+            if(curr_start > prev_end){ //no overlap
+                count++;
+                prev=points[i]; //change prev to curr
+            }
+            else{ // find overlap area
+                prev[0]=max(prev_start, curr_start);
+                prev[1]=min(prev_end, curr_end);
+            }
+        }
+        return count;
+    }
+};
